@@ -34,9 +34,79 @@ namespace Rocky.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Category newCategory)
         {
-            _db.Category.Add(newCategory);
-            _db.SaveChanges();
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                _db.Category.Add(newCategory);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(newCategory);
+            
         }
+
+        //GET-EDIT
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            var obj = _db.Category.Find(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+
+            return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Category newCategory)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.Category.Update(newCategory);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(newCategory);
+
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            var obj = _db.Category.Find(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+
+            return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeletePost(int? id)
+        {
+            var obj = _db.Category.Find(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            {
+                _db.Category.Remove(obj);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+        }
+
     }
 }
