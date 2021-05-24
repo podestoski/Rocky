@@ -17,6 +17,7 @@ namespace Rocky.Models
 
         public string Description { get; set; }
 
+        [Display(Name="Short Description")]
         public string ShortDescription { get; set; }
 
         [Required]
